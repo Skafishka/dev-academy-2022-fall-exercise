@@ -141,14 +141,19 @@ citybikes_july_Schema.set('toJSON', {
 */
 
 const stations_Schema = mongoose.Schema({
-    departure: Date,
-    return: Date,
-    departure_station_id: Number,
-    departure_station_name: String,
-    return_station_id: Number,
-    return_station_name: String,
-    covered_distance_m: Number,
-    duration_sec: Number,   
+    fid: Number,
+    id: Number,
+    nimi: String,
+    namn: String,
+    name: String,
+    osoite: String,
+    adress: String,
+    kaupunki: String,
+    stad: String,
+    operaattor: String,
+    kapasiteet: Number,
+    x: Number,
+    y: Number,   
 },
     { collection: 'stations' }
 )
