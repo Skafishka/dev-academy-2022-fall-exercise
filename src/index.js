@@ -18,28 +18,33 @@ var conn = mongoose.createConnection(url_05_06)
 // Creating Schema for May journey set
 */
 
-const citybikes_may_Schema = mongoose.Schema({
-    departure: Date,
-    return: Date,
-    departure_station_id: Number,
-    departure_station_name: String,
-    return_station_id: Number,
-    return_station_name: String,
-    covered_distance_m: Number,
-    duration_sec: Number,
-},
+const citybikes_may_Schema = mongoose.Schema(
+      {
+        "Departure": { type: Date },
+        "Return": { type: Date },
+        "Departure station id": { type: Number },
+        "Departure station name": { type: String },
+        "Return station id": { type: Number },
+        "Return station name": { type: String },
+        "Covered distance (m)": { type: Number },
+        "Duration (sec)": { type: Number },
+        "id": { type: Number}
+      },
     { collection: 'may' }
 )
 
-const Citybike_may = conn.model('Citybike_may', citybikes_may_Schema)
+const Citybike_may = conn.model('may', citybikes_may_Schema)
 
 /*
 // Fetching data for May journey on separate link with results limited by 100 objects
 */
 
 app.get('/citybike/may', (req, res) => {
-    Citybike_may.find({}).limit(100).then(journey => {res.json(journey)})
+    Citybike_may.find({ "Covered distance (m)" : { $gt : 10 }, "Duration (sec)" : { $gt : 10 } })
+    .limit(1000)
+    .then(journey => {res.json(journey)})
 })
+
 
 /*
 // Deleting "_id" and linking it value to "id" naming for easy reading of database
@@ -57,14 +62,15 @@ citybikes_may_Schema.set('toJSON', {
 */
 
 const citybikes_june_Schema = mongoose.Schema({
-    departure: Date,
-    return: Date,
-    departure_station_id: Number,
-    departure_station_name: String,
-    return_station_id: Number,
-    return_station_name: String,
-    covered_distance_m: Number,
-    duration_sec: Number,    
+    "Departure": { type: Date },
+    "Return": { type: Date },
+    "Departure station id": { type: Number },
+    "Departure station name": { type: String },
+    "Return station id": { type: Number },
+    "Return station name": { type: String },
+    "Covered distance (m)": { type: Number },
+    "Duration (sec)": { type: Number },
+    "id": { type: Number}    
 },
     { collection: 'june' }
 )
@@ -76,7 +82,9 @@ const Citybike_june = conn.model('Citybike_june', citybikes_june_Schema)
 */
 
 app.get('/citybike/june', (req, res) => {
-    Citybike_june.find({}).limit(100).then(journey => {res.json(journey)})
+    Citybike_june.find({ "Covered distance (m)" : { $gt : 10 }, "Duration (sec)" : { $gt : 10 } })
+    .limit(1000)
+    .then(journey => {res.json(journey)})
 })
 
 /*
@@ -103,14 +111,15 @@ var conn2 = mongoose.createConnection(url_07)
 */
 
 const citybikes_july_Schema = mongoose.Schema({
-    departure: Date,
-    return: Date,
-    departure_station_id: Number,
-    departure_station_name: String,
-    return_station_id: Number,
-    return_station_name: String,
-    covered_distance_m: Number,
-    duration_sec: Number,   
+    "Departure": { type: Date },
+    "Return": { type: Date },
+    "Departure station id": { type: Number },
+    "Departure station name": { type: String },
+    "Return station id": { type: Number },
+    "Return station name": { type: String },
+    "Covered distance (m)": { type: Number },
+    "Duration (sec)": { type: Number },
+    "id": { type: Number}  
 },
     { collection: 'july' }
 )
@@ -122,7 +131,9 @@ const Citybike_july = conn2.model('Citybike_july', citybikes_july_Schema)
 */
 
 app.get('/citybike/july', (req, res) => {
-    Citybike_july.find({}).limit(100).then(journey => {res.json(journey)})
+    Citybike_july.find({ "Covered distance (m)" : { $gt : 10 }, "Duration (sec)" : { $gt : 10 } })
+    .limit(1000)
+    .then(journey => {res.json(journey)})
 })
 
 /*
@@ -141,19 +152,19 @@ citybikes_july_Schema.set('toJSON', {
 */
 
 const stations_Schema = mongoose.Schema({
-    fid: Number,
-    id: Number,
-    nimi: String,
-    namn: String,
-    name: String,
-    osoite: String,
-    adress: String,
-    kaupunki: String,
-    stad: String,
-    operaattor: String,
-    kapasiteet: Number,
-    x: Number,
-    y: Number,   
+    "FID": { type: Number },
+    "ID": { type: Number },
+    "NIMI": { type: String },
+    "Namn": { type: String },
+    "Name": { type: String },
+    "Osoite": { type: String },
+    "Adress": { type: String },
+    "Kaupunki": { type: String },
+    "Stad": { type: String },
+    "Operaattor": { type: String },
+    "Kapasiteet": { type: Number },
+    "x": { type: Number },
+    "y": { type: Number },   
 },
     { collection: 'stations' }
 )
@@ -161,11 +172,11 @@ const stations_Schema = mongoose.Schema({
 const Stations = conn2.model('Stations', stations_Schema)
 
 /*
-// Fetching data for stations on separate link with results limited by 100 objects
+// Fetching data for stations on separate link with results limited by 1000 objects
 */
 
 app.get('/citybike/stations', (req, res) => {
-    Stations.find({}).limit(100).then(station => {res.json(station)})
+    Stations.find({}).limit(1000).then(station => {res.json(station)})
 })
 
 /*
