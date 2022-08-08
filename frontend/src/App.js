@@ -7,7 +7,7 @@ const Journeys = (props) => {
   if (props.month === 1) {
     return (
       <>
-        <h4>Filter by station's departure or return name: </h4> <input value={props.showFiltered} onChange={props.handleFilterChange}/>
+        <h4>Search journey filter by station's departure or return name: </h4> <input value={props.showFiltered} onChange={props.handleFilterChange}/>
         <h4>Here there are:</h4>
         <table>
           <tbody>
@@ -34,7 +34,7 @@ const Journeys = (props) => {
   } else if (props.month === 2) {
     return (
       <>
-        <h4>Filter by station's departure or return name: </h4> <input value={props.showFiltered} onChange={props.handleFilterChange}/>
+        <h4>Search journey filter by station's departure or return name: </h4> <input value={props.showFiltered} onChange={props.handleFilterChange}/>
         <h4>Here there are:</h4>
         <table>
           <tbody>
@@ -61,7 +61,7 @@ const Journeys = (props) => {
   } else if (props.month === 3) {
     return (
       <>
-        <h4>Filter by station's departure or return name:</h4> <input value={props.showFiltered} onChange={props.handleFilterChange}/>
+        <h4>Search journey filter by station's departure or return name:</h4> <input value={props.showFiltered} onChange={props.handleFilterChange}/>
         <h4>Here there are:</h4>
         <table>
           <tbody>
@@ -92,11 +92,19 @@ const Stations = (props) => {
   if (props.value > 0) {
   return (
     <>
-      {props.stations.map((value, id) => (
-        <li key={id.toString()}>
-          {value["Name"]}
-        </li>
-      ))}
+      <h4>Search filter by station name: </h4> <input value={props.showFilteredStations} onChange={props.handleFilterChangeSt}/>
+      <table>
+        <tbody>
+          {props.stations.filter(station => station["Name"].toLowerCase()
+            .includes(props.showFilteredStations.toLowerCase()))
+            .map((value, id) => (
+              <tr key={id.toString()}>
+                <td><b>Name: </b>{value["Name"]}</td><td><b>Address: </b>{value["Adress"]}</td><td><b>Capacity: </b>{value["Kapasiteet"]}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     </>
   )
 }}
@@ -113,6 +121,7 @@ const App = () => {
   const [value, setValue] = useState(0)
   const [month, setValueMonth] = useState(0)
   const [showFiltered, setShowFiltered] = useState('')
+  const [showFilteredStations, setShowFilteredStations] = useState('')
   var count_stations = 0
   var count_may = 1
   var count_june = 2
@@ -179,6 +188,10 @@ const App = () => {
     setShowFiltered(event.target.value)
   }
 
+  const handleFilterChangeSt = (event) => {
+    setShowFilteredStations(event.target.value)
+  }
+
   return (
     <>
     <h3>List of Journeys</h3>
@@ -188,7 +201,7 @@ const App = () => {
     <h3>List of Stations</h3>
     <h4>Please push the button to fetch a list of stations</h4>
     <Button text='Stations' handleClick={stations_vote} /> <Button text='Hide list of Stations' handleClick={hide_stations_vote}/>
-    <Stations value={value} stations={stations}/>
+    <Stations value={value} stations={stations} showFilteredStations={showFilteredStations} handleFilterChangeSt={handleFilterChangeSt}/>
     </>
   )
 }
