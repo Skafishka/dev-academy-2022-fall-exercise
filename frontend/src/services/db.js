@@ -29,7 +29,7 @@ const getStations = () => {
 }
 
 const create = newObject => {
-    const req = axios.post(url_stations)
+    const req = axios.post(url_stations, newObject)
     return req.then(res => res.data)
 }
 

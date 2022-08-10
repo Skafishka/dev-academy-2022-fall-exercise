@@ -101,7 +101,7 @@ const Stations = (props) => {
             .includes(props.showFilteredStations.toLowerCase()))
             .map((value, id) => (
               <tr key={id.toString()}>
-                <td><b>Name: </b>{value["Name"]}</td><td><b>Address: </b>{value["Adress"]}</td><td><b>Capacity: </b>{value["Kapasiteet"]}</td><td><button onClick={() => props.handleSingleStation(value.Name, value.Adress)}>Push to see a single station view (below)</button></td>
+                <td><b>Name: </b>{value["Name"]}</td><td><b>Address: </b>{value["Adress"]}</td><td><b>Capacity: </b>{value["Kapasiteet"]}</td><td><button onClick={() => props.handleSingleStation(value.Name, value.Adress)}>Push to see a single station view (above)</button></td>
               </tr>
             ))
           }
@@ -239,12 +239,10 @@ const App = () => {
 
   const addStation = (event) => {
     event.preventDefault()
-
     const stationObject = {
-      "Name": newName,
-      "Adress": newAddress
+      Name: newName,
+      Adress: newAddress
     }
-
     if (stations.find(station => {return (JSON.stringify(station.Name) === JSON.stringify(newName)) })) {
       window.alert(`${newName} is already added to the Stations list`) 
       setNewName('')
@@ -266,18 +264,18 @@ const App = () => {
 
   return (
     <>
-    <h3>List of Journeys</h3>
-    <h4>Please select the month:</h4>
-    <Button text='May' handleClick={may_vote}/> <Button text='June' handleClick={june_vote}/> <Button text='July' handleClick={july_vote}/> <Button text='Hide list of Journeys' handleClick={hide_journeys_vote}/>
-    <Journeys journeysMay={journeysMay} month={month} journeysJune={journeysJune} journeysJuly={journeysJuly} showFiltered={showFiltered} handleFilterChange={handleFilterChange}/>
-    <h3>List of Stations</h3>
-    <h4>Add a new station</h4>
-    <Notification message={newMessage} />
-    <StationForm addStation={addStation} newName={newName} handleNoteChange={handleNoteChange} newAddress={newAddress} handleAddressChange={handleAddressChange}/>
-    <h4>Please push the button to fetch a list of stations</h4>
-    <Button text='Stations' handleClick={stations_vote} /> <Button text='Hide list of Stations' handleClick={hide_stations_vote}/>
-    <Stations value={value} stations={stations} showFilteredStations={showFilteredStations} handleFilterChangeSt={handleFilterChangeSt} handleSingleStation={handleSingleStation} /> 
-    <SingleStationView count={count} departureCount={departureCount} returnCount={returnCount} stationName={stationName} stationAddress={stationAddress} />
+      <h3>List of Journeys</h3>
+        <h4>Please select the month:</h4>
+          <Button text='May' handleClick={may_vote}/> <Button text='June' handleClick={june_vote}/> <Button text='July' handleClick={july_vote}/> <Button text='Hide list of Journeys' handleClick={hide_journeys_vote} />
+          <Journeys journeysMay={journeysMay} month={month} journeysJune={journeysJune} journeysJuly={journeysJuly} showFiltered={showFiltered} handleFilterChange={handleFilterChange} />
+      <h3>List of Stations</h3>
+        <h4>Add a new station: <StationForm addStation={addStation} newName={newName} handleNoteChange={handleNoteChange} newAddress={newAddress} handleAddressChange={handleAddressChange} /></h4>
+          <Notification message={newMessage} />
+          
+        <h4>Please push the button to fetch a list of stations:</h4>
+          <Button text='Stations' handleClick={stations_vote} /> <Button text='Hide list of Stations' handleClick={hide_stations_vote} />
+          <SingleStationView count={count} departureCount={departureCount} returnCount={returnCount} stationName={stationName} stationAddress={stationAddress} />
+          <Stations value={value} stations={stations} showFilteredStations={showFilteredStations} handleFilterChangeSt={handleFilterChangeSt} handleSingleStation={handleSingleStation} />
     </>
   )
 }
