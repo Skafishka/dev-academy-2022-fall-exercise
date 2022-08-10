@@ -54,7 +54,7 @@ citybikes_may_Schema.set('toJSON', {
 
 app.get('/citybike/may', (req, res) => {
     Citybike_may.find({ "Covered distance (m)" : { $gt : 10 }, "Duration (sec)" : { $gt : 10 } })
-    .limit(100)
+    .limit(1000)
     .then(journey => {res.json(journey)})
 })
 
@@ -95,7 +95,7 @@ citybikes_june_Schema.set('toJSON', {
 
 app.get('/citybike/june', (req, res) => {
     Citybike_june.find({ "Covered distance (m)" : { $gt : 10 }, "Duration (sec)" : { $gt : 10 } })
-    .limit(100)
+    .limit(1000)
     .then(journey => {res.json(journey)})
 })
 
@@ -144,7 +144,7 @@ citybikes_july_Schema.set('toJSON', {
 
 app.get('/citybike/july', (req, res) => {
     Citybike_july.find({ "Covered distance (m)" : { $gt : 10 }, "Duration (sec)" : { $gt : 10 } })
-    .limit(100)
+    .limit(1000)
     .then(journey => {res.json(journey)})
 })
 
@@ -188,11 +188,28 @@ stations_Schema.set('toJSON', {
 })
 
 /*
-// Fetching data for stations on separate link with results limited by 1000 objects
+// Fetching data for stations on separate link with results
 */
 
 app.get('/citybike/stations', (req, res) => {
     Stations.find({}).then(station => {res.json(station)})
+})
+
+/*
+// Adding a possibility to POST new stations on the list
+*/
+
+app.post('/citybike/stations', (req, res) => {
+    const body = req.body
+
+    const station = new Stations({
+        "Name": body.Name,
+        "Adress": body.Adress,
+    })
+
+    station.save().then(savedStation => {
+        res.json(savedStation)
+    })
 })
 
 const PORT = process.env.PORT || 3001
