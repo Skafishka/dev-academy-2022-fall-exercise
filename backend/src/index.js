@@ -49,7 +49,7 @@ citybikes_may_Schema.set('toJSON', {
 })
 
 /*
-// Fetching data for May journey on separate link with results limited by 100 objects
+// Fetching data for May journey on separate link with results limited by 1000 objects
 */
 
 app.get('/citybike/may', (req, res) => {
@@ -90,7 +90,7 @@ citybikes_june_Schema.set('toJSON', {
 })
 
 /*
-// Fetching data for June journey on separate link with results limited by 100 objects
+// Fetching data for June journey on separate link with results limited by 1000 objects
 */
 
 app.get('/citybike/june', (req, res) => {
@@ -139,7 +139,7 @@ citybikes_july_Schema.set('toJSON', {
 })
 
 /*
-// Fetching data for July journey on separate link with results limited by 100 objects
+// Fetching data for July journey on separate link with results limited by 1000 objects
 */
 
 app.get('/citybike/july', (req, res) => {
