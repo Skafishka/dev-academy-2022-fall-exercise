@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import noteService from './services/db'
 import moment from 'moment'
+import StationForm from './components/StationForm'
+import Notification from './components/Notification'
 var momentDurationFormatSetup = require("moment-duration-format")
 
 const Journeys = (props) => {
@@ -99,7 +101,7 @@ const Stations = (props) => {
             .includes(props.showFilteredStations.toLowerCase()))
             .map((value, id) => (
               <tr key={id.toString()}>
-                <td><b>Name: </b>{value["Name"]}</td><td><b>Address: </b>{value["Adress"]}</td><td><b>Capacity: </b>{value["Kapasiteet"]}</td>
+                <td><b>Name: </b>{value["Name"]}</td><td><b>Address: </b>{value["Adress"]}</td><td><b>Capacity: </b>{value["Kapasiteet"]}</td><td><button onClick={() => props.handleSingleStation(value.Name, value.Adress)}>Push to see a single station view (below)</button></td>
               </tr>
             ))
           }
@@ -108,6 +110,19 @@ const Stations = (props) => {
     </>
   )
 }}
+
+const SingleStationView = (props) => {
+  if (props.count > 0) {
+    return (
+      <>
+        <h4>Station name: {props.stationName}</h4>
+        <h4>Station address: {props.stationAddress}</h4>
+        <h4>Total number of journeys starting from the station for 3 months: {props.departureCount}</h4>
+        <h4>Total number of journeys ending at the station for 3 months: {props.returnCount}</h4>
+      </>
+    )
+  }
+}
 
 const Button = (props) => (
   <button onClick={props.handleClick}>{props.text}</button>
@@ -126,6 +141,15 @@ const App = () => {
   var count_may = 1
   var count_june = 2
   var count_july = 3
+  var start = 0
+  const [count, setCount] = useState(0)
+  const [departureCount, setDepartureCount] = useState(0)
+  const [returnCount, setReturnCount] = useState(0)
+  const [stationName, setStationName] = useState('')
+  const [stationAddress, setStationAddress] = useState('')
+  const [newName, setNewName] = useState('')
+  const [newAddress, setNewAddress] = useState('')
+  const [newMessage, setNewMessage] = useState(null)
 
   useEffect(() => {
     noteService
@@ -192,6 +216,54 @@ const App = () => {
     setShowFilteredStations(event.target.value)
   }
 
+  const handleSingleStation = (Name, Adress) => {
+    start += 1
+    setCount(start)
+    setStationName(Name)
+    setStationAddress(Adress)
+    setDepartureCount(journeysMay.filter(q => q["Departure station name"] === Name).length 
+                    + journeysJune.filter(q => q["Departure station name"] === Name).length
+                    + journeysJuly.filter(q => q["Departure station name"] === Name).length)
+    setReturnCount(journeysMay.filter(q => q["Return station name"] === Name).length 
+                  + journeysJune.filter(q => q["Return station name"] === Name).length
+                  + journeysJuly.filter(q => q["Return station name"] === Name).length)
+  }
+
+  const handleNoteChange = (event) => {
+    setNewName(event.target.value)
+  }
+
+  const handleAddressChange = (event) => {
+    setNewAddress(event.target.value)
+  }
+
+  const addStation = (event) => {
+    event.preventDefault()
+
+    const stationObject = {
+      "Name": newName,
+      "Adress": newAddress
+    }
+
+    if (stations.find(station => {return (JSON.stringify(station.Name) === JSON.stringify(newName)) })) {
+      window.alert(`${newName} is already added to the Stations list`) 
+      setNewName('')
+      setNewAddress('')
+    } else {
+      noteService
+        .create(stationObject)
+        .then(() => {
+          setStations(stations.concat(stationObject))
+          setNewMessage(`${newName} was added`)
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 2000)
+          setNewName('')
+          setNewAddress('')
+        })
+    }
+  }
+
   return (
     <>
     <h3>List of Journeys</h3>
@@ -199,9 +271,13 @@ const App = () => {
     <Button text='May' handleClick={may_vote}/> <Button text='June' handleClick={june_vote}/> <Button text='July' handleClick={july_vote}/> <Button text='Hide list of Journeys' handleClick={hide_journeys_vote}/>
     <Journeys journeysMay={journeysMay} month={month} journeysJune={journeysJune} journeysJuly={journeysJuly} showFiltered={showFiltered} handleFilterChange={handleFilterChange}/>
     <h3>List of Stations</h3>
+    <h4>Add a new station</h4>
+    <Notification message={newMessage} />
+    <StationForm addStation={addStation} newName={newName} handleNoteChange={handleNoteChange} newAddress={newAddress} handleAddressChange={handleAddressChange}/>
     <h4>Please push the button to fetch a list of stations</h4>
     <Button text='Stations' handleClick={stations_vote} /> <Button text='Hide list of Stations' handleClick={hide_stations_vote}/>
-    <Stations value={value} stations={stations} showFilteredStations={showFilteredStations} handleFilterChangeSt={handleFilterChangeSt}/>
+    <Stations value={value} stations={stations} showFilteredStations={showFilteredStations} handleFilterChangeSt={handleFilterChangeSt} handleSingleStation={handleSingleStation} /> 
+    <SingleStationView count={count} departureCount={departureCount} returnCount={returnCount} stationName={stationName} stationAddress={stationAddress} />
     </>
   )
 }

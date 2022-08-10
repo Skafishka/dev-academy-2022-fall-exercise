@@ -28,9 +28,15 @@ const getStations = () => {
         res.data)
 }
 
+const create = newObject => {
+    const req = axios.post(url_stations)
+    return req.then(res => res.data)
+}
+
 export default {
     getMay,
     getJune,
     getJuly,
     getStations,
+    create,
 }
