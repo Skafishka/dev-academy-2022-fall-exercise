@@ -6,6 +6,10 @@ import Journeys from './components/Journeys'
 import Stations from './components/Stations'
 import SingleStationView from './components/SingleStationView'
 
+/*
+// described Button carcase
+*/
+
 const Button = (props) => (
   <button onClick={props.handleClick}>{props.text}</button>
 )
@@ -33,6 +37,10 @@ const App = () => {
   const [newAddress, setNewAddress] = useState('')
   const [newMessage, setNewMessage] = useState(null)
 
+/*
+// data fetching for months journeys
+*/
+
   useEffect(() => {
     noteService
       .getMay()
@@ -57,6 +65,10 @@ const App = () => {
       })
   }, [])
 
+/*
+// data fetching for Stations
+*/
+
   useEffect(() => {
     noteService
       .getStations()
@@ -65,14 +77,26 @@ const App = () => {
       })
   }, [])
 
+/*
+// action for showing stations list
+*/
+
   const stations_vote = () => {
     count_stations +=1
     setValue(count_stations)
   }
 
+/*
+// action for hiding stations list
+*/ 
+
   const hide_stations_vote = () => {
     setValue(0)
   }
+
+/*
+// actions for showing months list
+*/
 
   const may_vote = () => { 
     setValueMonth(count_may)
@@ -86,17 +110,33 @@ const App = () => {
     setValueMonth(count_july)
   }
 
+/*
+// action for hiding months list
+*/
+
   const hide_journeys_vote = () => {
     setValueMonth(0)
   }
+
+/*
+// action for handling of journeys filter
+*/
 
   const handleFilterChange = (event) => {
     setShowFiltered(event.target.value)
   }
 
+/*
+// action for handling of stations filter
+*/
+
   const handleFilterChangeSt = (event) => {
     setShowFilteredStations(event.target.value)
   }
+
+/*
+// action for calculating statistic of single station
+*/
 
   const handleSingleStation = (Name, Adress) => {
     start += 1
@@ -110,6 +150,10 @@ const App = () => {
                   + journeysJune.filter(q => q["Return station name"] === Name).length
                   + journeysJuly.filter(q => q["Return station name"] === Name).length)
   }
+
+/*
+// actions for adding a new station
+*/
 
   const handleNoteChange = (event) => {
     setNewName(event.target.value)
