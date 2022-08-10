@@ -192,7 +192,7 @@ stations_Schema.set('toJSON', {
 */
 
 app.get('/citybike/stations', (req, res) => {
-    Stations.find({}).limit(100).then(station => {res.json(station)})
+    Stations.find({}).then(station => {res.json(station)})
 })
 
 const PORT = process.env.PORT || 3001
