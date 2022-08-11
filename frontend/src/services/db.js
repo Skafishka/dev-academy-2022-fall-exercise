@@ -1,8 +1,8 @@
 import axios from 'axios'
-const url_may = `http://localhost:3001/citybike/may`
-const url_june = `http://localhost:3001/citybike/june`
-const url_july = `http://localhost:3001/citybike/july`
-const url_stations = `http://localhost:3001/citybike/stations`
+const url_may = `/citybike/may`
+const url_june = `/citybike/june`
+const url_july = `/citybike/july`
+const url_stations = `/citybike/stations`
 
 const getMay = () => {
     const req = axios.get(url_may)
