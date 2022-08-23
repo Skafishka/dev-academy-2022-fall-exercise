@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
@@ -13,8 +14,7 @@ app.use(express.static('build'))
 // Connect to databases MongoDB for May and June journey sets created on one free Cluster with maximum size 512mb.  
 */
 
-const password_05_06 = 'XB14JYZiCxlN1j1v'
-const url_05_06 = `mongodb+srv://solita-dev-academy:${password_05_06}@cluster0.ipmn7cb.mongodb.net/solita?retryWrites=true&w=majority`
+const url_05_06 = process.env.MONGODB_URI_05_06
 var conn = mongoose.createConnection(url_05_06)
 
 /*
@@ -104,8 +104,7 @@ app.get('/citybike/june', (req, res) => {
 // Connect to databases MongoDB for July journey set created on second free Cluster with maximum size 512mb.  
 */
 
-const password_07 = 'oCOlI9mTphKdVW9k'
-const url_07 = `mongodb+srv://solita-dev-academy-2:${password_07}@cluster0.kp7zfuj.mongodb.net/solita?retryWrites=true&w=majority`
+const url_07 = process.env.MONGODB_URI_07
 var conn2 = mongoose.createConnection(url_07)
 
 /*
