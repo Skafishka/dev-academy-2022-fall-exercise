@@ -1,4 +1,4 @@
-const StationForm = (props) => {
+const AddStationForm = (props) => {
     return (
         <form onSubmit={props.addStation}>
             <>
@@ -13,4 +13,4 @@ const StationForm = (props) => {
     )
 }
 
-export default StationForm
+export default AddStationForm
